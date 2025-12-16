@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16
+    container_name: trackstats-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: trackstats
+      POSTGRES_USER: trackstats
+      POSTGRES_PASSWORD: trackstats
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U trackstats -d trackstats" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: trackstats-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/trackstats
+      SPRING_DATASOURCE_USERNAME: trackstats
+      SPRING_DATASOURCE_PASSWORD: trackstats
+      APP_JWT_SECRET: 9aK!fP3sLzQ8tV1wX4bC7eR0yU2hM5nD
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
