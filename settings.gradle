@@ -1,0 +1,2 @@
+rootProject.name = 'race_log'
+include 'race-log-backend'

@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/trackstats
-    username: trackstats
-    password: trackstats
+    url: jdbc:postgresql://localhost:5432/racelog
+    username: racelog
+    password: racelog
   jpa:
     hibernate:
       ddl-auto: validate
